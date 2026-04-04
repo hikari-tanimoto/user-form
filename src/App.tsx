@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import "./App.css";
+import { FormField } from "./components/FormField";
 
 const formSchema = z
   .object({
@@ -39,52 +40,56 @@ function App() {
     <div style={{ maxWidth: 480, margin: "2rem auto", padding: "0 1rem" }}>
       <h1>User Form</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ marginBottom: "1rem" }}>
-          <label htmlFor="name">Name</label>
+        <FormField
+          label="Name"
+          htmlFor="name"
+          errorMessage={errors.name?.message}
+        >
           <input
             id="name"
             {...register("name")}
             style={{ display: "block", width: "100%", padding: "0.5rem" }}
           />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label htmlFor="email">Email</label>
+        </FormField>
+
+        <FormField
+          label="Email"
+          htmlFor="email"
+          errorMessage={errors.email?.message}
+        >
           <input
             id="email"
             {...register("email")}
             type="email"
             style={{ display: "block", width: "100%", padding: "0.5rem" }}
           />
-          {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label htmlFor="password">Password</label>
+        <FormField
+          label="Password"
+          htmlFor="password"
+          errorMessage={errors.password?.message}
+        >
           <input
             id="password"
             {...register("password")}
             type="password"
             style={{ display: "block", width: "100%", padding: "0.5rem" }}
           />
-          {errors.password && (
-            <p style={{ color: "red" }}>{errors.password.message}</p>
-          )}
-        </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
+        </FormField>
+
+        <FormField
+          label="Confirm Password"
+          htmlFor="confirmPassword"
+          errorMessage={errors.confirmPassword?.message}
+        >
           <input
             id="confirmPassword"
             {...register("confirmPassword")}
             type="password"
             style={{ display: "block", width: "100%", padding: "0.5rem" }}
           />
-          {errors.confirmPassword && (
-            <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
-          )}
-        </div>
+        </FormField>
 
         <button type="submit" style={{ padding: "0.5rem 1.5rem" }}>
           Submit
