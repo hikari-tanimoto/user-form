@@ -3,9 +3,21 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import "./App.css";
 
-const formSchema = z.object({
-  name: z.string().min(1, { message: "名前は必須です" }),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(1, { message: "名前は必須です" }),
+    email: z
+      .string()
+      .email({ message: "メールアドレスとして正しくありません" }),
+    password: z
+      .string()
+      .min(8, { message: "パスワードは8文字以上である必要があります" }),
+    confirmPassword: z.string().min(1, { message: "パスワードは必須です" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "パスワードが一致しません",
+    path: ["confirmPassword"],
+  });
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -35,6 +47,43 @@ function App() {
             style={{ display: "block", width: "100%", padding: "0.5rem" }}
           />
           {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+        </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            {...register("email")}
+            type="email"
+            style={{ display: "block", width: "100%", padding: "0.5rem" }}
+          />
+          {errors.email && (
+            <p style={{ color: "red" }}>{errors.email.message}</p>
+          )}
+        </div>
+
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            {...register("password")}
+            type="password"
+            style={{ display: "block", width: "100%", padding: "0.5rem" }}
+          />
+          {errors.password && (
+            <p style={{ color: "red" }}>{errors.password.message}</p>
+          )}
+        </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            {...register("confirmPassword")}
+            type="password"
+            style={{ display: "block", width: "100%", padding: "0.5rem" }}
+          />
+          {errors.confirmPassword && (
+            <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
+          )}
         </div>
 
         <button type="submit" style={{ padding: "0.5rem 1.5rem" }}>
