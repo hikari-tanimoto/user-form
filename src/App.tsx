@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import "./App.css";
 import { FormField } from "./components/FormField";
+import { UserList } from "./components/UserList";
 
 const formSchema = z
   .object({
@@ -95,6 +96,7 @@ function App() {
           Submit
         </button>
       </form>
+      <UserList />
     </div>
   );
 }
