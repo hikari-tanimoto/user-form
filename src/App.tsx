@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import "./App.css";
@@ -32,9 +33,26 @@ function App() {
     resolver: zodResolver(formSchema),
   });
 
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (user: FormValues) => {
+      return fetch("https://jsonplaceholder.typicode.com/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      }).then((res) => res.json());
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-    alert(`Name: ${data.name}`);
+    mutation.mutate(data);
   };
 
   return (
